@@ -18,7 +18,18 @@ print(var.count("7"))
 var2 = var.split()
 print("/".join(var2))
 tupla = ("Bom", "Dia")  #Imutável
-lista = ["Boa"]
+lista = ["Boa","Noite",["Boa", "tarde"],2] #Mutável
+lista.append("texto")
+#tupla.append("texto") #Inviável
+print(lista[1])       #Suporta a slicing
+a = list(range(5))
+print(a)
+a.insert(0,42)        #<Índice>,<valor inserido>
+print (a)
+a.reverse()
+print (a)
+a.sort()
+print (a)
 
 
 
