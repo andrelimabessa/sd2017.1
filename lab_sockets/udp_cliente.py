@@ -22,3 +22,5 @@ def client():
     data, address = sock.recvfrom(MAX_BYTES)    # Recebendo dados
     text = data.decode(ENCODE)                  # Convertendo dados de BASE64 para UTF-8
     print(address, text)                        # Imprime texto e endereços
+
+client()

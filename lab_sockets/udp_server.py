@@ -25,3 +25,5 @@ def server():
 
     #Fechando Socket
     sock.close()
+
+server()
