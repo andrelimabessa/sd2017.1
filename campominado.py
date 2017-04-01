@@ -56,6 +56,13 @@ def pega_vizinhos(tabuleiro, num_linha, num_coluna):
     tamanho_tabuleiro = len(tabuleiro)
     vizinhos = []
 
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if i == 0 and j == 0:
+                continue
+            elif -1 < (num_linha + i) < tamanho_tabuleiro and -1 < (num_coluna + j) < tamanho_tabuleiro:
+                vizinhos.append((num_linha + i, num_coluna + j))
+
     return vizinhos
 
 
@@ -139,7 +146,7 @@ def jogar():
     print('Bem-vindo(a) ao Campo Minado em Python!')
     print('_______________________________________\n')
 
-    tamanho_tabuleiro = eval(input('Escolha o tamanho do tabuleiro (Mínimo: 4 - Máximo: 10): '))
+    tamanho_tabuleiro = eval(input('Escolha o tamanho do tabuleiro (Mínimo: 4(4x4) - Máximo: 10(10x10)): '))
     '''tamanho_tabuleiro = 9'''
     qtd_minas = eval(input('Escolha a quantidade de minas (Mínimo: 1 - Máximo: Total de posições do tabuleiro - 1): '))
     '''qtd_minas = 10'''
