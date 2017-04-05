@@ -93,4 +93,5 @@ def show_board(board, rows):
         print(" ")
         print(board[i])
 
-server()
+if __name__ == "__main__":
+    server()
