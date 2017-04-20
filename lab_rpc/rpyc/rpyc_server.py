@@ -1,4 +1,5 @@
 import rpyc
+from rpyc.utils.server import ThreadedServer
 
 class MyService(rpyc.Service):
 
@@ -11,7 +12,6 @@ class MyService(rpyc.Service):
     def exposed_print_name(self, nome, sobrenome):
         return nome + " " + sobrenome
 
-def server():
-    from rpyc.utils.server import ThreadedServer
+def server():    
     t = ThreadedServer(MyService, port = 18861)
     t.start()
