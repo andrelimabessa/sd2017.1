@@ -3,7 +3,7 @@ from rpyc.utils.server import ThreadedServer
 
 class MyService(rpyc.Service):
 
-    def exposed_line_counter(self, fileobj, function):
+    def exposed_line_counter(self, fileobj, function): //exposed_expoe o metodo
         print('Cliente chamou line counter')
         for linenum, line in enumerate(fileobj.readlines()):
             function(line)
