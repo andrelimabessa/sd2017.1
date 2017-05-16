@@ -4,9 +4,11 @@ def main():
 
     try:
         context = zmq.Context(1)
+
         # Socket do cliente
         frontend = context.socket(zmq.XREP)
         frontend.bind("tcp://*:5559")
+
         # Socket do servidor
         backend = context.socket(zmq.XREQ)
         backend.bind("tcp://*:5560")

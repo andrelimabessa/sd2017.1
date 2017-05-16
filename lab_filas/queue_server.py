@@ -9,6 +9,7 @@ try:
     socket = context.socket(zmq.REP)
     socket.connect("tcp://localhost:%s" % port)
     server_id = random.randrange(1,10005)
+
     while True:
         #  Espera pela próxima requisição do cliente
         message = socket.recv()
@@ -17,6 +18,7 @@ try:
         text = "Id do servidor %s" % server_id
         data = text.encode("UTF-8")
         socket.send(data)
+
 except:
     for val in sys.exc_info():
         print(val)
