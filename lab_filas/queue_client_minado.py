@@ -14,22 +14,24 @@ def start_game():
     game = True
     cont = 0
 
-    linha = ''
+    linhas = ''
     colunas = ''
     minas = ''
 
     campoComMinas = []
     campoSemMinas = []
     print("\tBem vindo ao Campo minado!!")
-    if os.path.exists('salvo.pkl') == True:
+    if os.path.exists('salvo.zmq') == True:
         print("\a\a\a\a Carregando Jogo Salvo!")
         print("\t\tJogo Carregado, Continue!")
         dados = ["C", 'salvo.pkl']
         socket.send_json(dados)
 
         data = socket.recv_json()
-        cont, linha, colunas, campoComMinas = dados
+        cont, linhas, colunas, campoComMinas, campoSemMinas = data
         cont = int(cont)
+        print(data)
+
 
 
     else:
@@ -50,7 +52,7 @@ def start_game():
 
 
     while game:
-        mostraCampoSMinas(campoSemMinas, linha, colunas)
+        mostraCampoSMinas(campoSemMinas, linhas, colunas)
 
         print("\nJogadas: %d" % cont)
         cont += 1
@@ -62,12 +64,12 @@ def start_game():
         game = escolha(hitL, hitC, campoSemMinas, campoComMinas)                #executa a função escolha e retorna um valor de opção
         if game == 1:
             os.system("cls")
-            salvar(str(cont), linha, colunas, campoComMinas)
+            #salvar(str(cont), linhas, colunas, campoComMinas)
             continue
         elif game == 2:                                                        #caso seja escolhido uma letra ao invés de numero ele salva
             os.system("cls")
             os.system("color 0F")
-            salvar(str(cont), linha, colunas, campoComMinas)
+            salvar(str(cont), linhas, colunas, campoComMinas)
             print("\n\tJogo salvo, Jogo encerado!!!")
             break
         else:
@@ -75,7 +77,7 @@ def start_game():
             os.system("color 0C")
             print("\t\t Jogo finalizado!!!")
             print("\tVocê acertou uma mina em %d jogadas." % cont)
-            mostraCampoComMinas(campoComMinas, linha, colunas)
+            mostraCampoComMinas(campoComMinas, linhas, colunas)
             finaliza_jogo(cont)                                             #executa a função de finalização do game
             print("\n\a\a\a....Arquivo salvo deletado com sucesso...\a\a\a")
             break
