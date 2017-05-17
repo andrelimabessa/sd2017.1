@@ -1,6 +1,6 @@
 import sys
-from udp_server import server
-from udp_cliente import client
+from rpc_server import server
+from rpc_cliente import main_menu
 
 print("Você quer executar:")
 print("1 para servidor")
@@ -13,9 +13,10 @@ try:
         server()
     elif int(opcao) == 2:
         print("Cliente ativado:\n")
-        client()
+        main_menu()
+
 except : # pega todas possíveis
     for val in sys.exc_info():
         print(val)
 
-
+input()
