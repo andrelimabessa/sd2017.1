@@ -1,58 +1,78 @@
-import socket
 import CampoMinado
-from datetime import datetime
+import zmq
+import sys
+import random
 
 ENCODE = "UTF-8"
-MAX_BYTES = 65535
-PORT = 5000            
-HOST = ''     	       
-a = ''
 
-def enviar(address, text):
-    orig = (HOST, PORT)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(orig)
 
-    
-    data = text.encode(ENCODE)  
-    sock.sendto(data, address)  
+def limparLogs():
+    arq = open("LogJogadas.txt", "w")
+    arq.close()
+    arq = open("LogTabuleiro.txt", "w")
+    arq.close()
 
 
 def server():
-    
-    orig = (HOST, PORT)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(orig)
+    a = CampoMinado.campominado()
+    jogoCarregado = True
+    if not(a.existeJogoSalvo()):
+        jogoCarregado = False
+        a = ''
 
-    while True:
-        
-        data, address = sock.recvfrom(MAX_BYTES) 
-        text = data.decode(ENCODE) 
-        
+    try:
+        port = "5560"
+        context = zmq.Context()
+        socket = context.socket(zmq.REP)
+        socket.connect("tcp://localhost:%s" % port)
+        server_id = random.randrange(1, 10005)
+        while True:
+            #  Espera pela próxima requisição do cliente
+            text = socket.recv()
 
-        if int(text) == 1:
-            a = CampoMinado.campominado()
-            
-            text = "1"
-            data = text.encode(ENCODE) 
-            sock.sendto(data, address) 
-        elif int(text) == 2:
-            text = "2"
-            if a.numJogadas == 0:
-                text = "0"
-                data = text.encode(ENCODE)  
-                sock.sendto(data, address)
-            else:
-                data = text.encode(ENCODE)  
-                sock.sendto(data, address)
+            if jogoCarregado:
+                try:
+                    int(text)
+                    jogoCarregado = False
+                except:
+                    jogoCarregado = False
+                    data = text.decode(ENCODE)
+                    xy = data.split(",")
 
-                data, address = sock.recvfrom(MAX_BYTES)  
-                text = data.decode(ENCODE)
+                    text = a.jogada(int(xy[0]), int(xy[1]))
+                    data = text.encode(ENCODE)  # Codifica para BASE64 os dados
+                    socket.send(data)  # Enviando dados
+                    continue
+
+            if int(text) == 1:
+                limparLogs()
+                a = BatalhaNavalSD.batalhaNaval()
+                # Envia resposta
+                text = "1"
+                data = text.encode(ENCODE)  # Codifica para BASE64 os dados
+                socket.send(data)  # Enviando dados
+
+            if int(text) == 2:
+                text = "2"
+                if a.numJogadas == 0:
+                    a.limparLogs()
+                    text = "0"
+                    data = text.encode(ENCODE)  # Codifica para BASE64 os dados
+                    socket.send(data)
+                else:
+                    data = text.encode(ENCODE)  # Codifica para BASE64 os dados
+                    socket.send(data)
+
+                    data = socket.recv()
+                    text = data.decode(ENCODE)
+
+                    xy = text.split(",")
+                    text = a.jogada(int(xy[0]), int(xy[1]))
+                    data = text.encode(ENCODE)  # Codifica para BASE64 os dados
+                    socket.send(data)  # Enviando dados
 
 
-                xy = text.split(",")
-                text = a.jogada(int(xy[0]), int(xy[1]))
-                data = text.encode(ENCODE)  
-                sock.sendto(data, address)  
-
+    except:
+        for val in sys.exc_info():
+            print(val)
 
