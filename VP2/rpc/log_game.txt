@@ -1,0 +1,1 @@
+{u'linhasMatriz': 3, u'matriz': [[u'*', u'1', u'*'], [u'*', u'*', u'*'], [u'*', u'*', u'*']], u'colunasMatriz': 3, u'without': 0, u'posBombas': [[2, 1], [1, 1], [2, 2]], u'jogadas': 1, u'qtdJogadas': 5}
