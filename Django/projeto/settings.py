@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    'projeto.app',
 ]
 
 MIDDLEWARE = [
@@ -118,4 +118,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, '/var/www/idocsapp/idocsapp/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'idocsapp/site/static'),)
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'idocsapp/site', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/teste'
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    'app',
+)
+
+# LOGIN_URL = 'mysiteVf:login'
+# LOGIN_REDIRECT_URL = 'mysiteVf:teste'
+# LOGOUT_URL = 'mysiteVf:logout'
+# AUTH_USER_MODEL = 'mysiteVf.User'

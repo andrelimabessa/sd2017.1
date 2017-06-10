@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils import timezone
+
 
 class Jogada(models.Model):
     autor = models.ForeignKey('auth.User', related_name="autor")
