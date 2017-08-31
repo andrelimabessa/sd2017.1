@@ -1,34 +1,34 @@
-import socket
-from datetime import datetime
+import zmq
+import sys
+import random
 
 
 
 
 ENCODE = "UTF-8"
-HOST = '127.0.0.1'   
-PORT = 5000         
-MAX_BYTES = 65535   
+
 
 
 def client():
-   
-    while True:
+    port = "5559"
+    context = zmq.Context()
+    print("Conectando com o servidor...")
+    socket = context.socket(zmq.REQ)
+    socket.connect("tcp://localhost:%s" % port)
+    client_id = random.randrange(1, 10005)
+    gameOver = 0
+    while gameOver == 0:
         print ("1 - Novo Jogo")
         print("2 - Fazer jogada")
-        text = input("Digite uma opcao: ")  
-        data = text.encode(ENCODE)  
+        text = input("Digite uma opcao:\n")  # Recebe dados
+        data = text.encode(ENCODE)  # Codifica para BASE64 os dados de entrada
+        socket.send(data)  # Envia os dados para o destino
 
-    
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        dest = (HOST, PORT) 
-        sock.sendto(data, dest)  
-
-     
-        data, address = sock.recvfrom(MAX_BYTES)  
-        text = data.decode(ENCODE)  
-
+        # Resposta de envio ao servidor
+        text = socket.recv()
         if int(text) == 0:
-            text = "Fim do jogo!"
+            text = "Suas jogadas acabaram, inicie um novo jogo!"
+            gameOver = 1
 
         elif int(text) == 1:
             text = "Novo Jogo Iniciado"
@@ -36,12 +36,13 @@ def client():
         elif int(text) == 2:
             x = input("Digite a posicao do eixo X:")
             y = input("Digite a posicao do eixo Y:")
-            text = x+","+y
+            text = str(x)+","+str(y)
             data = text.encode(ENCODE)
-            sock.sendto(data, dest)  
-            data, address = sock.recvfrom(MAX_BYTES)  
-            text = data.decode(ENCODE)  
+            socket.send(data)  # Envia os dados para o destino
 
+            # Resposta de envio ao servidor
+            data = socket.recv()
+            text = data.decode(ENCODE)
 
-
-        print("\n\n"+text+"\n")  
+        print("Saida")
+        print("\n\n"+str(text)+"\n")  # Imprime texto e endereços
